@@ -1,0 +1,55 @@
+Apuntes de clase, pocos
+
+Para las declaraciones logicas hay diferentes salidas posibles.
+
+
+jefe(X,Y) : x es el jefe de Y
+
+curritos(X,Y) : X e Y tienen un jefe común Z
+  Declaración logica;:
+    curritos(X,Y) :-
+      jefe(Z, Y),
+      jefe(Z, Y)
+
+jefazo(X,Y) : si X esta por encima de Y, X es el jefazo
+  //Si A es jefe de X y  X es jefazo de Y, entonces por al propiedad transitiva A es jefazo
+    
+  Declaración logica:
+    jefazo(A, Y) :-
+    jefe(A, X),   
+    jefazo(X, Y).
+  //Pero tambien es jefazo si es jefe  de Y directamente
+
+  jefazo(A, Y) :-
+    jefe(A, Y).
+
+Las estructuras de datos de toda la vida de dios, se conocen como registros:
+  
+    
+Se permite anidamiento de registros:
+Una estrucrura se declara de la siguiente manera
+  X = date(dia, mes, año)
+    X.dia
+    X.mes
+    X.año
+    
+    
+    
+Esto 18:30 se puede declarar como ':'(18, 30) se pone entre comillas simples por ser un operador
+Las variables anonimas(_): cada vez que aparece se supone que es una variable diferente, se usa cuando declaras una estructura
+y vas probando con diferentes valores
+
+
+Las listas se recorreon por recursión proque en prolog no hay bucles jeje:
+
+    Si el elementos esta en la primera posición acabamos -->    member(X, [X|_]).
+    si no esta en el primer elemento se  ejecuta este    -->    member(X, [_|T]) :- member(X, T).
+
+Recorrer una lista de dos en dos, hasta que se ha recorrido toda la lista;:
+    mult([X|L]) :-
+      multiplicar(x, 2, x2),
+      mult(L).
+    mult([]).
+
+
+    
