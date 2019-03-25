@@ -1,0 +1,88 @@
+EJ1. Escribir uun programa lógico puro con los siguientes predicados:
+
+a) menor_que (X,Y) cierto si y solo si X es menor que Y
+
+nat(0).
+nat(s(X)):-
+nat(X).
+0 es nat
+X + 1 es nat
+si X es nat
+0
+S(0)=1
+S(S(0))=2
+S(S(S(0)))=3
+
+
+0 < X+1 si X es natural
+menor_que (0,S(x)):-
+	nat(x).
+
+X + 1 < Y + 1 si X < Y
+menor_que(S(X),s(Y)):-
+	menor_que/X,Y)
+
+
+
+¿Es 1 < 2?
+?- menor_que(S(0),S(S(0))).
+  (2)  |-----> menor_que(0, S(0))
+  					|-----> yes
+
+
+b) par(X), cierto si y solo si X es par
+
+par(0).
+par(S(S(X))):-
+par(X).
+
+
+c)suma(X,Y,Z), cierto si y solo si Z es la suma de X e Y
+
+%suma(x,y,z)
+suma(0,Y,Y):-
+	nat(Y)
+suma (S(X),Y,S(Z)):-
+	suma(X,Y,Z)
+
+
+d)producto(X,Y,Z), cierto si y solo si Z es el producto de X e Y
+
+%producto(X,Y,Z)
+producto(X,Y,0)
+producto(S(X),Y,Z):-
+	suma(Z0,Y,Z),
+		producto(X,Y,Z0).
+
+?- producto(S(0),S(S(0)), Z)
+	(2)|-----> suma(Z0,S(S(0)),Z)
+		(1)		|----->producto(0,S(S(0)))
+
+
+e)potencia (X,Y,Z), cierto si y solo si Z es X elevado a Y
+
+potencia(S(X),0,S(0)):-
+	nat(X).
+potencia(X,S(0),X):-
+	nat(X).
+potencia(X,S(Y),Z):-
+	potencia(X,Y,Z0),
+	producto(Z0,X,Z)
+
+
+
+EJ2. Utilizando los predicados del ejercicio anterior, escribir un programa lógico puro con los siguientes predicados
+
+a) suma_a_lista(L,N,SL), cierto si y solo si la lista SL es la lista que se obtiene al sumarle N a cada uno de los elementos de la lista L
+
+suma_a_lista([],_,[]).
+suma_a_lista([X|Xs],N,[Y|Ys]):-
+	suma_a_lista(Xs,N,Ys),
+	suma(X,N,Y).
+
+c) acumula_lista(L,S), cierto si y solo si S es la suma de los elementos de la lista L
+
+acumula_lista([],0).
+acumula_lista([X|Xs],S):-
+	acumula_lista(Xs,S0),
+	suma(X,S0,S)
