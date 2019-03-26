@@ -1,0 +1,10 @@
+APUNTES POCOS SEGUNDA PARTE
+
+peano(N)--> peano(s(N)) inc(N, s(N))
+
+%Definición de menor igual:
+less_or_equal(X,Y) <==> X<=Y
+
+base: O(vacio)<=Y
+hipo: X<=Y
+	paso: X+1<=Y
