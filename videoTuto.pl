@@ -24,6 +24,7 @@ unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
 %Definimos la lista de construcciones no 100 porcient
 
 construccion([pieza(An, Al, Prof, C)|_]).
+
 dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
 unaCabeza([Cab|Lista],Cab).
 
@@ -49,23 +50,31 @@ esTorre(Construccion) :-
 	eliminarCabeza(Construccion, ConstruccionCopia),
 	esTorre(ConstruccionCopia).
 
-suma(0,X,X):- nat(X).
+suma(0,X,X). %modificado
 suma(s(X),Y,s(Z)):- suma(X,Y,Z).
 
 
-contarAltura([],A).
+contarAltura([],A,A).
 
-contarAltura(Construccion, A):-
+	
+	
+	
+
+contarAltura(Construccion, A, B):-
 	unaCabeza(Construccion, P),
 	unAtributo(P, _,V,_,_),
-	suma(V,A,A),
+	suma(V,A,B),
 	eliminarCabeza(Construccion, ConstruccionCopia),
-	contarAltura(ConstruccionCopia, A).
+	contarAltura(ConstruccionCopia, B, C).
 
 
 alturaTorre(Construccion, A) :-
 	esTorre(Construccion),
-	contarAltura(Construcion, A).
+	unaCabeza(Construccion, P),
+	unAtributo(P, _,V,_,_),
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	contarAltura(ConstruccionCopia, V,Q),
+	suma(0,Q,A).
 
 
 
