@@ -25,8 +25,11 @@ unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
 
 construccion([pieza(An, Al, Prof, C)|_]).
 
+
 dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
 unaCabeza([Cab|Lista],Cab).
+
+meterCabeza(Cab,Lista, [Cab|Lista]).
 
 
 
@@ -55,11 +58,6 @@ suma(s(X),Y,s(Z)):- suma(X,Y,Z).
 
 
 contarAltura([],A,A).
-
-	
-	
-	
-
 contarAltura(Construccion, A, B):-
 	unaCabeza(Construccion, P),
 	unAtributo(P, _,V,_,_),
@@ -73,8 +71,33 @@ alturaTorre(Construccion, A) :-
 	unaCabeza(Construccion, P),
 	unAtributo(P, _,V,_,_),
 	eliminarCabeza(Construccion, ConstruccionCopia),
-	contarAltura(ConstruccionCopia, V,Q),
-	suma(0,Q,A).
+	contarAltura(ConstruccionCopia, V, A).
 
+
+invertirColores([], Colores, Colores).
+invertirColores(CAux, CAux1, Colores):-
+	unaCabeza(CAux, P),
+	eliminarCabeza(CAux, CAux3),
+	meterCabeza(P, CAux1, CAux2),
+	invertirColores(CAux3, CAux2, Colores).
+
+
+guardarColores([], CAux, Colores):-
+	invertirColores(CAux, [], Colores).	
+guardarColores(Construccion, CAux, Colores):-
+	unaCabeza(Construccion, P),
+	unAtributo(P, _,_,_,C),
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	meterCabeza(C, CAux, CAux1),
+	guardarColores(ConstruccionCopia, CAux1, Colores).
+
+
+coloresTorre(Construccion, Colores) :-
+	esTorre(Construccion),
+	unaCabeza(Construccion, P),
+	unAtributo(P, _,_,_,C),
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	meterCabeza(C, [],CAux),
+	guardarColores(ConstruccionCopia, CAux, Colores).
 
 
