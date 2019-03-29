@@ -164,18 +164,3 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	suma(s(0),NrClavosAux, NrClavosAux1),
 	eliminarCabeza(Fila,FilaAux),
 	nrClavos(FilaAux,NrClavosAux1,NrClavos).
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%PRUEBAS
-
-%coloresIncluidos([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a),pieza(s(0),s(0),s(0),a)])
-
