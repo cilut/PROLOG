@@ -113,11 +113,11 @@ comparaConResto(_,[],A):-
 comparaConResto(C1, Colores2,A):-
 	unaCabeza(Colores2,C2),
 	(igual(C1,C2),
-	 A=s(0),
-	 comparaConResto(C1,[],A));
+	 comparaConResto(C1,[],s(0)));
+	unaCabeza(Colores2,C2),
 	(not(igual(C1,C2)),
 	 eliminarCabeza(Colores2,Colores2Aux),
-	 comparaConResto(C1,Colores2Aux)).
+	 comparaConResto(C1,Colores2Aux,s(s(0)))).
         
 
 contieneColores([],_).
