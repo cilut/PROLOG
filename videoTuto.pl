@@ -171,23 +171,3 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	unaCabeza(Fila,C),
 	eliminarCabeza(Fila,FilaAux),
 	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
-	unaCabeza(Fila,C),
-	(not(igual(C,b)),
-	 suma(s(0),NrClavosAux, NrClavosAux1),
-	 eliminarCabeza(Fila,FilaAux),
-	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%PRUEBAS
-
-%coloresIncluidos([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a),pieza(s(0),s(0),s(0),a)])
-
