@@ -3,6 +3,7 @@ color(r).
 color(a).
 color(v).
 color(am).
+colorB(b).
 
 igual(X,X).
 
@@ -32,12 +33,20 @@ unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
 
 %Definimos la lista de construcciones no 100 porcient
 
-construccion([pieza(An, Al, Prof, C)|_]).
+construccion([pieza(An, Al, Prof, C)]).
+construccion([pieza(An, Al, Prof, C)|L]) :- construccion(L).
+
+construccionFila([C]):-color(C);colorB(C).
+construccionFila([C|L]) :- construccionFila(L).
+construccionEdificio([C]):-construccionFila(C).
+construccionEdificio([C|L]) :- construccionFila(C),construccionEdificio(L).
+
 
 
 dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
 unaCabeza([Cab|Lista],Cab).
 meterCabeza(Cab,Lista, [Cab|Lista]).
+
 
 
 
@@ -144,6 +153,7 @@ coloresIncluidos(Construccion1,Construccion2) :-
 esEdificioPar([]).
 
 esEdificioPar(Construccion) :- 
+	construccionEdificio(Construccion),
 	unaCabeza(Construccion,Fila),
 	NrClavosAux = 0,
 	nrClavos(Fila, NrClavosAux,NrClavos),
@@ -161,9 +171,11 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	unaCabeza(Fila,C),
 	eliminarCabeza(Fila,FilaAux),
 	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
-	suma(s(0),NrClavosAux, NrClavosAux1),
-	eliminarCabeza(Fila,FilaAux),
-	nrClavos(FilaAux,NrClavosAux1,NrClavos).
+	unaCabeza(Fila,C),
+	(not(igual(C,b)),
+	 suma(s(0),NrClavosAux, NrClavosAux1),
+	 eliminarCabeza(Fila,FilaAux),
+	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
 
 
 
