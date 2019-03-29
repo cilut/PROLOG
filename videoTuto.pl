@@ -12,6 +12,9 @@ nat(s(X)) :- nat(X).
 menorIgualNr(0, X) :- nat(X).
 menorIgualNr(s(X), s(Y)) :- menorIgualNr(X,Y).
 
+not(X):-X,!,fail.
+not(X).
+
 %Estructura de pieza
 
 pieza(Ancho, Alto, Prof, Color) :-
@@ -28,7 +31,6 @@ construccion([pieza(An, Al, Prof, C)|_]).
 
 dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
 unaCabeza([Cab|Lista],Cab).
-
 meterCabeza(Cab,Lista, [Cab|Lista]).
 
 
@@ -100,4 +102,37 @@ coloresTorre(Construccion, Colores) :-
 	meterCabeza(C, [],CAux),
 	guardarColores(ConstruccionCopia, CAux, Colores).
 
+comparaColor(C1,C2,A,B) :-
+	(igual(C1,C2),
+	    A=s(0));
+	(not(igual(C1,C2)),
+            B=s(0)).
 
+comparaConResto(_,[],A):-
+	igual(A,s(0)).
+comparaConResto(C1, Colores2,A):-
+	unaCabeza(Colores2,C2),
+	(igual(C1,C2),
+	 A=s(0),
+	 comparaConResto(C1,[],A));
+	(not(igual(C1,C2)),
+	 eliminarCabeza(Colores2,Colores2Aux),
+	 comparaConResto(C1,Colores2Aux)).
+        
+
+contieneColores([],_).
+contieneColores(Colores1, Colores2):-
+	unaCabeza(Colores1, C1),
+	eliminarCabeza(Colores1, Colores1Aux),
+	comparaConResto(C1, Colores2,_),
+	contieneColores(Colores1Aux,Colores2).
+
+coloresIncluidos(Construccion1,Construccion2) :-
+	esTorre(Construccion1),
+	esTorre(Construccion2),
+	coloresTorre(Construccion1, Colores1),
+	coloresTorre(Construccion2, Colores2),
+	contieneColores(Colores1,Colores2).
+%%%%%%%%%%%%%%%%%%%PRUEBAS
+
+%coloresIncluidos([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a),pieza(s(0),s(0),s(0),a)])
