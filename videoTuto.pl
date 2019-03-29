@@ -15,6 +15,12 @@ menorIgualNr(s(X), s(Y)) :- menorIgualNr(X,Y).
 not(X):-X,!,fail.
 not(X).
 
+less(0,s(X)) :- nat(X).
+less(s(X),s(Y)) :- less(X,Y).
+
+mod(X,Y,X) :- less(X, Y).
+mod(X,Y,Z) :- suma(X1,Y,X), mod(X1,Y,Z).
+
 %Estructura de pieza
 
 pieza(Ancho, Alto, Prof, Color) :-
@@ -133,6 +139,43 @@ coloresIncluidos(Construccion1,Construccion2) :-
 	coloresTorre(Construccion1, Colores1),
 	coloresTorre(Construccion2, Colores2),
 	contieneColores(Colores1,Colores2).
+
+
+esEdificioPar([]).
+
+esEdificioPar(Construccion) :- 
+	unaCabeza(Construccion,Fila),
+	NrClavosAux = 0,
+	nrClavos(Fila, NrClavosAux,NrClavos),
+	mod(NrClavos,s(s(0)),Resto),
+	eliminarCabeza(Construccion, ConstruccionAux),
+	igual(Resto,0),
+	esEdificioPar(ConstruccionAux).
+
+
+nrClavos([], NrClavosAux,NrClavos):-
+	menorIgualNr(s(0),NrClavosAux),
+	igual(NrClavosAux,NrClavos).
+	
+nrClavos(Fila,NrClavosAux,NrClavos):-
+	unaCabeza(Fila,C),
+	eliminarCabeza(Fila,FilaAux),
+	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
+	suma(s(0),NrClavosAux, NrClavosAux1),
+	eliminarCabeza(Fila,FilaAux),
+	nrClavos(FilaAux,NrClavosAux1,NrClavos).
+
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%PRUEBAS
 
 %coloresIncluidos([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a),pieza(s(0),s(0),s(0),a)])
+
