@@ -171,3 +171,10 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	unaCabeza(Fila,C),
 	eliminarCabeza(Fila,FilaAux),
 	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
+
+	unaCabeza(Fila,C),
+	(not(igual(C,b)),
+	 suma(s(0),NrClavosAux, NrClavosAux1),
+	 eliminarCabeza(Fila,FilaAux),
+	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
+
