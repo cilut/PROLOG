@@ -29,15 +29,16 @@ pieza(Ancho, Alto, Prof, Color) :-
 	nat(Alto),
 	nat(Prof),
 	color(Color).
+
 unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
 
 %Definimos la lista de construcciones no 100 porcient
 
-construccion([pieza(An, Al, Prof, C)]).
+construccion([pieza(An, Al, Prof, C)]):-pieza(An,Al,Prof,C).
 construccion([pieza(An, Al, Prof, C)|L]) :- construccion(L).
 
 construccionFila([C]):-color(C);colorB(C).
-construccionFila([C|L]) :- construccionFila(L).
+construccionFila([C|L]) :- color(C),construccionFila(L).
 construccionEdificio([C]):-construccionFila(C).
 construccionEdificio([C|L]) :- construccionFila(C),construccionEdificio(L).
 
@@ -74,20 +75,20 @@ suma(0,X,X). %modificado
 suma(s(X),Y,s(Z)):- suma(X,Y,Z).
 
 
-contarAltura([],A,A).
-contarAltura(Construccion, A, B):-
-	unaCabeza(Construccion, P),
-	unAtributo(P, _,V,_,_),
-	suma(V,A,B),
-	eliminarCabeza(Construccion, ConstruccionCopia),
-	contarAltura(ConstruccionCopia, B, C).
 
+contarAltura([],A,A).
+contarAltura(Construccion, B,A):-
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	unaCabeza(Construccion, C),
+	unAtributo(C, _,V,_,_),
+	suma(V,B,Aux),
+	contarAltura(ConstruccionCopia, Aux, A).
 
 alturaTorre(Construccion, A) :-
 	esTorre(Construccion),
+	eliminarCabeza(Construccion, ConstruccionCopia),
 	unaCabeza(Construccion, P),
 	unAtributo(P, _,V,_,_),
-	eliminarCabeza(Construccion, ConstruccionCopia),
 	contarAltura(ConstruccionCopia, V, A).
 
 
@@ -153,8 +154,8 @@ coloresIncluidos(Construccion1,Construccion2) :-
 esEdificioPar([]).
 
 esEdificioPar(Construccion) :- 
-	construccionEdificio(Construccion),
 	unaCabeza(Construccion,Fila),
+	construccionFila(Fila),
 	NrClavosAux = 0,
 	nrClavos(Fila, NrClavosAux,NrClavos),
 	mod(NrClavos,s(s(0)),Resto),
@@ -177,4 +178,3 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	 suma(s(0),NrClavosAux, NrClavosAux1),
 	 eliminarCabeza(Fila,FilaAux),
 	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
-
