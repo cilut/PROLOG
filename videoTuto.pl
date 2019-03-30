@@ -1,14 +1,11 @@
-% Declaramos 
-color(r).
-color(a).
-color(v).
-color(am).
-colorB(b).
-
+%%%%%%%%%%%%%%%%FUNCIONES AUXILIARES%%%%%%%%%%%%%%%%
 igual(X,X).
 
 nat(0).
 nat(s(X)) :- nat(X).
+
+esPar(0).
+esPar(s(s(X))):- esPar(X).
 
 menorIgualNr(0, X) :- nat(X).
 menorIgualNr(s(X), s(Y)) :- menorIgualNr(X,Y).
@@ -16,13 +13,32 @@ menorIgualNr(s(X), s(Y)) :- menorIgualNr(X,Y).
 not(X):-X,!,fail.
 not(X).
 
-less(0,s(X)) :- nat(X).
-less(s(X),s(Y)) :- less(X,Y).
+menorNr(0,s(X)) :- nat(X).
+menorNr(s(X),s(Y)) :- menorNr(X,Y).
 
-mod(X,Y,X) :- less(X, Y).
-mod(X,Y,Z) :- suma(X1,Y,X), mod(X1,Y,Z).
+suma(0,X,X).
+suma(s(X),Y,s(Z)):- suma(X,Y,Z).
 
-%Estructura de pieza
+unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
+
+dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
+unaCabeza([Cab|Lista],Cab).
+meterCabeza(Cab,Lista, [Cab|Lista]).
+eliminarCabeza([Cabeza|Construccion],Construccion).
+
+menorIgualPiezaDC(pieza(An0,Al0,Pr0, C0),pieza(An1,Al1,Pr1, C1)) :-
+	menorIgualNr(An0,An1),
+	menorIgualNr(Pr0,Pr1).
+
+
+%%%%%%%%%%%%%%%%FUNCIONES AUXILIARES%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%ESTRUCTURAS%%%%%%%%%%%%%%%%
+color(r).
+color(a).
+color(v).
+color(am).
+colorB(b).
 
 pieza(Ancho, Alto, Prof, Color) :-
 	nat(Ancho),
@@ -30,40 +46,17 @@ pieza(Ancho, Alto, Prof, Color) :-
 	nat(Prof),
 	color(Color).
 
-unAtributo(pieza(Ancho, Alto, Prof, Color),Ancho, Alto,Prof, Color).
-
-%Definimos la lista de construcciones no 100 porcient
-
 construccion([pieza(An, Al, Prof, C)]):-pieza(An,Al,Prof,C).
-construccion([pieza(An, Al, Prof, C)|L]) :- construccion(L).
+construccion([pieza(An, Al, Prof, C)|L]) :- pieza(An,Al,Prof,C),construccion(L).
 
 construccionFila([C]):-color(C);colorB(C).
-construccionFila([C|L]) :- color(C),construccionFila(L).
-construccionEdificio([C]):-construccionFila(C).
-construccionEdificio([C|L]) :- construccionFila(C),construccionEdificio(L).
+construccionFila([C|L]) :- (color(C);colorB(C)),construccionFila(L).
+%%%%%%%%%%%%%%%%ESTRUCTURAS%%%%%%%%%%%%%%%%
 
 
+%%%%%%%%%%%%%%%%esTorre%%%%%%%%%%%%%%%%
 
-dosCabeza([Cab,Cab1|Lista],Cab, Cab1).
-unaCabeza([Cab|Lista],Cab).
-meterCabeza(Cab,Lista, [Cab|Lista]).
-
-
-
-
-%Falta ver como comparamos el color, si son iguales tiene que dar falso
-
-menorIgualPiezaDC(pieza(An0,Al0,Pr0, C0),pieza(An1,Al1,Pr1, C1)) :-
-	menorIgualNr(An0,An1),
-	menorIgualNr(Pr0,Pr1).
-
-%Nose si se hace con meto aux
-
-eliminarCabeza([Cabeza|Construccion],Construccion).
-
-%Elimina al eliminar cabeza, se hace listaCopia porque se vuelve a usar
-
-esTorre([pieza(An, Al, Prof, C)]).
+esTorre([pieza(An, Al, Prof, C)]):-pieza(An,AL,Prof,C).
 esTorre(Construccion) :-
 	construccion(Construccion),
 	dosCabeza(Construccion, P1, P2),
@@ -71,10 +64,15 @@ esTorre(Construccion) :-
 	eliminarCabeza(Construccion, ConstruccionCopia),
 	esTorre(ConstruccionCopia).
 
-suma(0,X,X). %modificado
-suma(s(X),Y,s(Z)):- suma(X,Y,Z).
+%%%%%%%%%%%%%%%%esTorre%%%%%%%%%%%%%%%%
 
-
+%%%%%%%%%%%%%%%%alturaTorre%%%%%%%%%%%%%%%%
+alturaTorre(Construccion, A) :-
+	esTorre(Construccion),
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	unaCabeza(Construccion, P),
+	unAtributo(P, _,V,_,_),
+	contarAltura(ConstruccionCopia, V, A).
 
 contarAltura([],A,A).
 contarAltura(Construccion, B,A):-
@@ -83,14 +81,17 @@ contarAltura(Construccion, B,A):-
 	unAtributo(C, _,V,_,_),
 	suma(V,B,Aux),
 	contarAltura(ConstruccionCopia, Aux, A).
+%%%%%%%%%%%%%%%%alturaTorre%%%%%%%%%%%%%%%%
 
-alturaTorre(Construccion, A) :-
+
+%%%%%%%%%%%%%%%%coloresTorre%%%%%%%%%%%%%%%%
+coloresTorre(Construccion, Colores) :-
 	esTorre(Construccion),
-	eliminarCabeza(Construccion, ConstruccionCopia),
 	unaCabeza(Construccion, P),
-	unAtributo(P, _,V,_,_),
-	contarAltura(ConstruccionCopia, V, A).
-
+	unAtributo(P, _,_,_,C),
+	eliminarCabeza(Construccion, ConstruccionCopia),
+	meterCabeza(C, [],CAux),
+	guardarColores(ConstruccionCopia, CAux, Colores).
 
 invertirColores([], Colores, Colores).
 invertirColores(CAux, CAux1, Colores):-
@@ -108,15 +109,17 @@ guardarColores(Construccion, CAux, Colores):-
 	eliminarCabeza(Construccion, ConstruccionCopia),
 	meterCabeza(C, CAux, CAux1),
 	guardarColores(ConstruccionCopia, CAux1, Colores).
+%%%%%%%%%%%%%%%%coloresTorre%%%%%%%%%%%%%%%%
 
 
-coloresTorre(Construccion, Colores) :-
-	esTorre(Construccion),
-	unaCabeza(Construccion, P),
-	unAtributo(P, _,_,_,C),
-	eliminarCabeza(Construccion, ConstruccionCopia),
-	meterCabeza(C, [],CAux),
-	guardarColores(ConstruccionCopia, CAux, Colores).
+%%%%%%%%%%%%%%%%coloresIncluidos%%%%%%%%%%%%%%%%
+
+coloresIncluidos(Construccion1,Construccion2) :-
+	esTorre(Construccion1),
+	esTorre(Construccion2),
+	coloresTorre(Construccion1, Colores1),
+	coloresTorre(Construccion2, Colores2),
+	contieneColores(Colores1,Colores2).
 
 comparaColor(C1,C2,A,B) :-
 	(igual(C1,C2),
@@ -134,7 +137,6 @@ comparaConResto(C1, Colores2,A):-
 	(not(igual(C1,C2)),
 	 eliminarCabeza(Colores2,Colores2Aux),
 	 comparaConResto(C1,Colores2Aux,s(s(0)))).
-        
 
 contieneColores([],_).
 contieneColores(Colores1, Colores2):-
@@ -142,27 +144,24 @@ contieneColores(Colores1, Colores2):-
 	eliminarCabeza(Colores1, Colores1Aux),
 	comparaConResto(C1, Colores2,_),
 	contieneColores(Colores1Aux,Colores2).
-
-coloresIncluidos(Construccion1,Construccion2) :-
-	esTorre(Construccion1),
-	esTorre(Construccion2),
-	coloresTorre(Construccion1, Colores1),
-	coloresTorre(Construccion2, Colores2),
-	contieneColores(Colores1,Colores2).
+%%%%%%%%%%%%%%%%coloresIncluidos%%%%%%%%%%%%%%%%
 
 
-esEdificioPar([]).
-
+%%%%%%%%%%%%%%%%esEdificioPar%%%%%%%%%%%%%%%%
+esEdificioPar([Fila]):-
+	construccionFila(Fila),
+	NrClavosAux = 0,
+	nrClavos(Fila, NrClavosAux,NrClavos),
+        esPar(NrClavos),
+	eliminarCabeza(Construccion, ConstruccionAux).
 esEdificioPar(Construccion) :- 
 	unaCabeza(Construccion,Fila),
 	construccionFila(Fila),
 	NrClavosAux = 0,
 	nrClavos(Fila, NrClavosAux,NrClavos),
-	mod(NrClavos,s(s(0)),Resto),
+	esPar(NrClavos),
 	eliminarCabeza(Construccion, ConstruccionAux),
-	igual(Resto,0),
 	esEdificioPar(ConstruccionAux).
-
 
 nrClavos([], NrClavosAux,NrClavos):-
 	menorIgualNr(s(0),NrClavosAux),
@@ -172,9 +171,29 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	unaCabeza(Fila,C),
 	eliminarCabeza(Fila,FilaAux),
 	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
-
 	unaCabeza(Fila,C),
 	(not(igual(C,b)),
 	 suma(s(0),NrClavosAux, NrClavosAux1),
 	 eliminarCabeza(Fila,FilaAux),
 	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
+%%%%%%%%%%%%%%%%esEdificioPar%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%esEdificioPiramide%%%%%%%%%%%%%%%%
+esEdificioPiramide([Fila]):-
+	construccionFila(Fila),
+	NrClavosAux=0,
+	nrClavos(Fila,NrClavosAux,NrClavos).
+	
+esEdificioPiramide(Construccion):-
+	dosCabeza(Construccion,C1,C2),
+	NrClavosAux=0,
+	nrClavos(C1,NrClavosAux,NrClavos1),
+	nrClavos(C2,NrClavosAux,NrClavos2),
+	menorNr(NrClavos1,NrClavos2),
+	eliminarCabeza(Construccion,ConstruccionAux),
+	esEdificioPiramide(ConstruccionAux).
+
+

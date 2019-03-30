@@ -18,12 +18,13 @@ not(esTorre([pieza(s(0),s(0),s(s(0)),r),pieza(s(0),s(0),s(0),a)])),
 not(esTorre([pieza(s(s(0)),s(s(0)),s(s(0)),r),pieza(s(0),s(0),s(0),a)])),
 not(esTorre([s(s(s(s(0)))),pieza(s(0),s(0),r),pieza(s(0),s(0),s(0),a)])).
 
+
 ALTURATORRE
 Pruebas que tiene que dar correcto: 
 alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],s(s(0))),
 alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(s(0)),s(0),r),pieza(s(0),s(s(s(0))),s(0),r)],s(s(s(0)))),
-alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(s(0)),s(0),r),pieza(s(s(0)),s(s(0)),s(s(0)),v),pieza(s(s(s(0))),s(s(s(0))),s(s(s(0))),am)],s(s(s(s(0))))), FALLO
-alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],s(s(s(s(s(0)))))), FALLO
+alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(s(0)),s(0),r),pieza(s(s(0)),s(s(0)),s(s(0)),v),pieza(s(s(s(0))),s(s(s(0))),s(s(s(0))),am)],s(s(s(s(s(s(s(s(0))))))))), 
+alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],s(s(s(s(s(0)))))), 
 not(alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],s(0))),
 not(alturaTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(s(0)),s(0),r),pieza(s(0),s(s(s(0))),s(0),r)],s(s(0)))),
 not(alturaTorre([pieza(s(s(0)),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],s(s(0)))).
@@ -60,15 +61,20 @@ not(coloresIncluidos([pieza(s(0),s(0),s(0),a),pieza(s(0),s(0),s(0),v),pieza(s(0)
 %%%%% SEGUNDA PARTE %%%%%
 
 ESEDIFICIOPAR
+esEdificioPar([[b,b,r,r,b,b]]),
 esEdificioPar([[b,b,r,r,b,b],[b,v,v,v,v,b],[b,b,v,v,b,b],[a,a,am,a,a,a],[b,b,am,am,b,b]]),
 esEdificioPar([[b,r,r,r,r,b],[b,v,v,v,v,b],[b,b,v,v,b,b],[a,a,am,a,a,a],[b,b,am,am,b,b]]),
 not(esEdificioPar([[b,b,b,r,b,b],[b,v,v,v,b,b],[b,v,v,v,b,b],[a,a,a,am,a,a,a],[b,b,am,am,b,b]])),
-not(esEdificioPar([[b,r,r,r,r,b],[b,v,v,v,v,b],[b,b,v,v,b,b],[a,a,a,am,a,a,a],[b,b,am,b,b,b]])).
-
+not(esEdificioPar([[b,r,r,r,r,b],[b,v,v,v,v,b],[b,b,v,v,b,b],[a,a,a,am,a,a,a],[b,b,am,b,b,b]])),
+not(esEdificioPar([[b,b,r,r,b,b],[]])),
+not(esEdificioPar([[],[b,b,r,r,b,b]])),
+not(esEdificioPar([[],[]])),
+not(esEdificioPar([[b,b,r,r,b,b],[b,v,v,v,v,b],[b,b,v,v,b,b],[a,a,p,p,a,a],[b,b,am,am,b,b]])).
 
 ESEDIFICIOPIRAMIDE
-esEdificioPiramide([b,b,r,b,b],[b,r,a,am,b],[r,r,r,r,r]),
-esEdificioPiramide([b,b,b,v,b,b,b],[b,b,r,v,r,b,b],[b,r,a,am,v,a,b],[r,r,r,r,r,r,r]),
-esEdificioPiramide([b,b,b,b,v,b,b,b,b],[b,b,b,r,v,r,b,b,b],[b,b,r,a,am,v,a,b,b],[b,r,r,r,r,r,r,r,b],[am,r,r,r,r,r,r,r,am]),
-esEdificioPiramide([v,b,b,b,b,b,b,b,b],[r,v,b,b,b,b,b,b,b],[am,a,r,a,am,b,b,b,b],[a,r,r,r,r,r,r,r,b],[am,r,r,r,r,r,r,r,am]),
-esEdificioPiramide([b,b,b,b,b,b,b,b,r],[b,b,b,b,b,a,a,a,a],[b,b,b,b,am,v,a,am,am],[b,b,r,r,r,r,r,r,a],[am,r,r,r,r,r,r,r,a]),
+%
+esEdificioPiramide([[b,b,r,b,b],[b,a,r,a,am,b],[r,r,r,am,r,r]]),
+esEdificioPiramide([[a],[b,a,a],[a,a,a,b],[r,r,r,r,r,r,a]]),
+esEdificioPiramide([[b,b,b,b,v,b,b,b,b],[b,b,b,r,v,r,b,b,b],[b,b,r,a,am,v,a,b,b],[b,r,r,r,r,r,r,r,b],[am,r,r,r,r,r,r,r,a,am]]),
+esEdificioPiramide([[v,b,b,b,b,b,b,b,b],[r,v,b,b,b,b,b,b,b],[am,a,r,a,am,b,b,b,b],[a,r,r,r,r,r,r,r,b],[am,r,r,r,r,r,r,r,am]]),
+esEdificioPiramide([b,b,b,b,b,b,b,r,r],[b,b,b,b,b,a,a,a,a],[b,b,b,b,am,v,a,am,am],[b,b,r,r,r,r,r,r,a],[am,r,r,r,r,r,r,r,a]),
