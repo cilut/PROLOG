@@ -124,8 +124,7 @@ coloresIncluidos(Construccion1,Construccion2) :-
 comparaColor(C1,C2,A,B) :-
 	(igual(C1,C2),
 	    A=s(0));
-	(not(igual(C1,C2)),
-            B=s(0)).
+	    B=s(0).
 
 comparaConResto(_,[],A):-
 	igual(A,s(0)).
@@ -133,8 +132,7 @@ comparaConResto(C1, Colores2,A):-
 	unaCabeza(Colores2,C2),
 	(igual(C1,C2),
 	 comparaConResto(C1,[],s(0)));
-	unaCabeza(Colores2,C2),
-	(not(igual(C1,C2)),
+	(unaCabeza(Colores2,C2),
 	 eliminarCabeza(Colores2,Colores2Aux),
 	 comparaConResto(C1,Colores2Aux,s(s(0)))).
 
@@ -171,8 +169,7 @@ nrClavos(Fila,NrClavosAux,NrClavos):-
 	unaCabeza(Fila,C),
 	eliminarCabeza(Fila,FilaAux),
 	(igual(C,b), nrClavos(FilaAux,NrClavosAux, NrClavos));
-	unaCabeza(Fila,C),
-	(not(igual(C,b)),
+	(unaCabeza(Fila,C),
 	 suma(s(0),NrClavosAux, NrClavosAux1),
 	 eliminarCabeza(Fila,FilaAux),
 	 nrClavos(FilaAux,NrClavosAux1,NrClavos)).
