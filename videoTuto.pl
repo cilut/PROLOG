@@ -42,8 +42,11 @@ colorB(b).
 
 pieza(Ancho, Alto, Prof, Color) :-
 	nat(Ancho),
+	menorNr(0,Ancho),
 	nat(Alto),
+	menorNr(0,Alto),
 	nat(Prof),
+	menorNr(0,Prof),
 	color(Color).
 
 construccion([pieza(An, Al, Prof, C)]):-pieza(An,Al,Prof,C).
