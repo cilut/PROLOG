@@ -49,7 +49,7 @@ not(coloresTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[r,r])),
 not(coloresTorre([pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[r,r,v])),
 not(coloresTorre([pieza(s(0),s(0),s(0),am),pieza(s(0),s(0),s(0),am),pieza(s(0),s(0),s(0),am),pieza(s(0),s(0),s(0),a)],[a,am,am,a])),
 not(coloresTorre([pieza(s(0),s(0),s(0),v),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),a)],[v,r,r,a])),
-not(coloresTorre([pieza(s(0),s(0),s(0),r),cosa(s(0),s(0),s(0),a)],[r,a]).
+not(coloresTorre([pieza(s(0),s(0),s(0),r),cosa(s(0),s(0),s(0),a)],[r,a])).
 
 COLORESINCLUIDOS
 coloresIncluidos([pieza(s(0),s(0),s(0),r)],[pieza(s(0),s(0),s(0),r),pieza(s(0),s(0),s(0),v),pieza(s(0),s(0),s(0),a)]),
