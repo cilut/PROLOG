@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%ALUMNOS DEL GRUPO%%%%%%%%%%%%%%%%%
-alumno_prode(ilut,xxxxxx,ciprian,160348).
-alumno_prode(mateos,martin,carlos,160185).
-alumno_prode(del_rio,garcia,javier,160451).
+alumno_prode(xxxxxx,ilut,ciprian,160348).
+alumno_prode(martin,mateos,carlos,160185).
+alumno_prode(garcia,del_rio,javier,160451).
 %%%%%%%%%%%%%%%%%ALUMNOS DEL GRUPO%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%FUNCIONES AUXILIARES%%%%%%%%%%%%%%%%
 igual(X,X).
