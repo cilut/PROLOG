@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%PRUEBAS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%MENOR%%%%%%%%%%%
+menor(1,2,<,M),M==1,
+menor(2,1,<,M),M==1,
+menor(2,2,=<,M),M==2,
+menor(4,2,>,M),M==4,
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%MENOR_O_IGUAL%%%%%%%
+menor_o_igual([a,a,a],[a,a,a,a,a]),%menor
+menor_o_igual(p(a,X),p(Z,m)),%son iguales
+menor_o_igual(p(...),p(...)),%es menor p que q
+menor_o_igual(p(a,b,c),p(a,a,a,a,a)),%es menor
+menor_o_igual(p(a,X,c,a),p(a,b,c,d)),%es menor
+menor_o_igual(p(q(r(a))),p(r(a))),%es menor
+menor_o_igual([a,b],[a,b,c,d]),%es menor
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%LISTA_HOJAS%%%%%%%%%%%%%
+lista_hojas([1,2,3],Hojas), Hojas = [tree(1,void,void),tree(2,void,void),tree(3,void,void)],
+lista_hojas([1,2,3,4,5],Hojas), Hojas =[tree(1,void,void),tree(2,void,void),tree(3,void,void),tree(4,void,void),tree(5,void,void)],
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%ORDENAR%%%%%%%%%%%%%%%
+%%Usa todos los apartados del punto tres
+ordenar([1,2,3,4,5],>,Orden),Orden==[5,4,3,2,1],
+ordenar([1,3,2,5,4,6,7,4],<,Orden),Orden== [1,2,3,4,4,5,6,7],
+ordenar([1,3,2,5,4,6,7,4],>,Orden),Orden== [7,6,5,4,4,3,2,1],
+ordenar([1,a,4,6,7,4],@>,Orden),Orden == [a,7,6,4,4,1],
+ordenar([1,a,4,b,a,7,4],@>,Orden),Orden== [b,a,a,7,4,4,1].

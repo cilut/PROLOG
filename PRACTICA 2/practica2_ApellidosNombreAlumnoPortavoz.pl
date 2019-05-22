@@ -40,45 +40,14 @@ menor_o_igual(X,Y):-
 	(var(X),nonvar(Y) ; var(Y),nonvar(X));		%Uno de los elementos es 0
 	functor(X,F1,A1),
 	functor(Y,F2,A2),
-	((F1@<F2;A1<A2);	%Comprobamos el tamaño de la variable en si
-	(F1==F2,menorPrimCadenas(X, Y, 1)));
+
+	(
+		(F1@<F2;A1<A2);	%Comprobamos el tamaño de la variable en si
+		(F1==F2,@<(X, Y))
+	);
 	X==Y.
 	
-menorPrimCadenas(X,Y,P):-
-		
-	arg(P, X, A1),							%obtenemos el argumento indicado	
-	(arg(P, Y, A2);not(arg(P, Y, A2))),		%obtenemos el argumento indicado
-	
-	(
-		(
-			(var(A1),nonvar(A2), A1 = A2);(var(A2),nonvar(A1), A2 = A1)
-		),
-		(
-			P1=1,P2 is P+P1, menorPrimCadenas(X, Y, P2)
-		)
 
-	);		%Uno de los elementos es no variable
-	arg(P, X, A1),							%obtenemos el argumento indicado	
-	(
-		arg(P, Y, A2);not(arg(P, Y, A2))
-	),		%obtenemos el argumento indicado
-	(
-		A1@<A2;
-		(
-			P1=1,P2 is P+P1, 
-			menorPrimCadenas(X, Y, P2)
-		)
-	);
-	(
-		arg(P, X, A1),							%obtenemos el argumento indicado	
-		(arg(P, Y, A2);not(arg(P, Y, A2))),		%obtenemos el argumento indicado
-	 	(A1==A2)
-	);
-	(
-		arg(P, X, A1),							%obtenemos el argumento indicado	
-		(arg(P, Y, A2);not(arg(P, Y, A2))),		%obtenemos el argumento indicado
-		menor_o_igual(A1,A2)
-	).
 %%%%%%%%%%%%%%%%MENOR_O_IGUAL%%%%%%%%%%%%%%%
 
 
@@ -132,6 +101,7 @@ ordenacion(Arbol, Comp, Orden):-
 		addend([],A1,Orden)
 	);
 	(
+	arg(2,Arbol,A2),
     	arg(3,Arbol,A3),
     	addhead(A3, [], Hojas),
     	ordenacion_aux(A2,Comp,[],Orden,Hojas)
@@ -142,7 +112,7 @@ ordenacion_aux(Arbol,Comp, OrdenAux,Orden,Hojas):-
 	
 	arg(1,Arbol,A1),
 	arg(2,Arbol,A2),
-	arg(3,Arbol,A3),
+
 	
 	(
 		A2==void,
@@ -150,6 +120,8 @@ ordenacion_aux(Arbol,Comp, OrdenAux,Orden,Hojas):-
 		reflotar(Hojas,Comp,OrdenAux1,Orden)
 
 	);
+	arg(2,Arbol,A2),
+	arg(3,Arbol,A3),
 	addhead(A3, Hojas, Hojas1),
 	ordenacion_aux(A2,Comp,OrdenAux,Orden,Hojas1).
 	
