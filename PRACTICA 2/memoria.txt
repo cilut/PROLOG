@@ -1,0 +1,234 @@
+
+ ____    ____  ________  ____    ____   ___   _______     _____       _                      
+|_   \  /   _||_   __  ||_   \  /   _|.´   `.|_   __ \   |_   _|     / \                     
+  |   \/   |    | |_ \_|  |   \/   | /  .-.  \ | |__) |    | |      / _ \                    
+  | |\  /| |    |  _| _   | |\  /| | | |   | | |  __ /     | |     / ___ \                   
+ _| |_\/_| |_  _| |__/ | _| |_\/_| |_\  `-´  /_| |  \ \_  _| |_  _/ /   \ \_                 
+|_____||_____||________||_____||_____|`.___.´|____| |___||_____||____| |____|                
+ _______  _______          _        ______  _________  _____   ______       _          _____   
+|_   __ \|_   __ \        / \     .´ ___  ||  _   _  ||_   _|.´ ___  |     / \        / ___ `. 
+  | |__) | | |__) |      / _ \   / .´   \_||_/ | | \_|  | | / .´   \_|    / _ \      |_/___) | 
+  |  ___/  |  __ /      / ___ \  | |           | |      | | | |          / ___ \      .´____.´ 
+ _| |_    _| |  \ \_  _/ /   \ \_\ `.___.´\   _| |_    _| |_\ `.___.´\ _/ /   \ \_   / /_____  
+|_____|  |____| |___||____| |____|`.____ .´  |_____|  |_____|`.____ .´|____| |____|  |_______| 
+                                                                                               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Autores:
+Ciprian Ilut, nº de matrícula: 160348
+Carlos Mateos Martín, nº de matrícula: 160185
+Javier del Río García, nº de matrícula: 160451
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+ 
+ ___  _/   __  _  __   __     _   _     ___ _  _  __  _    _  ___  __   ___ _  _/  _  _ 
+|    |  | |  \ | | __ |  |     \_/     |___  \/  |__] |    | |    |__| |    | |  | |\ | 
+|___ |__| |__/ | |__] |__|      |      |___ _/\_ |    |___ | |___ |  | |___ | |__| | \| 
+                                                                                        
+
+%%%%%%%%%%%%%%%%%ALUMNOS DEL GRUPO%%%%%%%%%%%%%%%%%
+alumno_prode(ilut,xxxxxx,ciprian,160348).
+alumno_prode(mateos,martin,carlos,160185).
+alumno_prode(del_rio,garcia,javier,160451).
+%%%%%%%%%%%%%%%%%ALUMNOS DEL GRUPO%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%FUNCIONES AUXILIARES%%%%%%%%%%%%%%%%
+
+var(X):-X=f(a). % Predicado que se verifica si X es una variable libre
+nonvar(X):-not(var(X)). % Predicado que se verifica si X no es una variable libre
+not(Goal) :- call(Goal), !, fail. % Negación por fallo
+not(Goal).
+
+
+
+addend([],X, [X]). % Predicado que se usa para añadir un elemento como último de la lista
+addend([C|R],X,  [C|R1]):- 
+	addend(R,X,  R1). 
+addhead(X, L, [X|L]). % Predicado que se usa para añadir un elemento como cabeza de la lista
+
+unaCabeza([Cab|Lista],Cab,Lista). % Predicado utilizado para obtener el primer elemento de una lista
+
+
+
+%%%%%%%%%%%%%%%%FUNCIONES AUXILIARES%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%MENOR%%%%%%%%%%%%%%%%
+menor(A,B,Comp,M):-
+	functor(X,Comp,2),% Compone X con el predicado Comp de dos argumentos
+	arg(1,X,A), % Se introduce A en el primer argumento
+	arg(2,X,B), % Se introduce B en el segundo argumento
+	(call(X),M=A); % Se comprueba si la comparación es verdadera. De ser así el valor devuelto será el de A
+	M=B. % En caso contrario será B el valor devuelto
+%%%%%%%%%%%%%%%%MENOR%%%%%%%%%%%%%%%%	
+
+
+%%%%%%%%%%%%%%%%MENOR_O_IGUAL%%%%%%%%%%%%%%%%
+menor_o_igual(X,Y):-
+	(var(X),nonvar(Y) ; var(Y),nonvar(X));		% Uno de los elementos es 0
+	functor(X,F1,A1), % Se compone X con el predicado F1 de argumentos A1
+	functor(Y,F2,A2), % Se compone Y con el predicado F2 de argumentos A2
+
+	(
+		(F1@<F2;A1<A2);	% Comprobamos el tamaño de la variable en si
+		(F1==F2,@<(X, Y)) % Se comparan tanto la aridad como los nombres y se deduce si es menor
+	);
+	X==Y. % En caso contrario se comprueba si X e Y son iguales
+	
+
+%%%%%%%%%%%%%%%%MENOR_O_IGUAL%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%LISTA_HOJAS%%%%%%%%%%%%%%%
+lista_hojas(Lista,Hojas):-
+	lista_hojas_aux(Lista,[],Hojas). % Se llama al predicado auxiliar
+
+lista_hojas_aux([],Hojas,Hojas). % Resolución para el caso de lista vacía
+lista_hojas_aux(Lista,Hojas,Salida):-
+	unaCabeza(Lista,Cab,ListaCopia), % Se extrae el primer elemento de la lista
+	addend(Hojas,tree(Cab,void,void),HojasCopia), % Se añade a Hojas como último elemento de Hojas con la forma (extraido,void,void)
+	lista_hojas_aux(ListaCopia,HojasCopia, Salida). % Se vuelve a llamar a la función con la lista resultante de eleminar el primer elemento
+%%%%%%%%%%%%%%%%LISTA_HOJAS%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%HOJAS_ARBOL%%%%%%%%%%%%%%%
+hojas_arbol(Hoja,Comp,Arbol):-
+	(
+		%%En caso de que hay un solo elemento en la lista
+		unaCabeza(Hoja,Hoja1,HojaCopia),
+		ArbolAux=Hoja1 % Se almacena el primer elemento de la lista en la variable ArbolAux
+	),
+	hojas_arbol_aux(HojaCopia,Comp,ArbolAux,Arbol). % Se llama al predicado auxiliar con una lista sin el primer elemento
+
+
+hojas_arbol_aux([],Comp,Arbol,Arbol). % Caso base
+hojas_arbol_aux(Hoja,Comp,ArbolAux,Arbol):-
+	(
+		
+		unaCabeza(Hoja,Hoja1,HojaCopia), % Se extrae el primer elemento de la lista
+		arg(1,Hoja1,Indice1), % Se extrae el valor de Hoja1 y se almacena en Indice1
+		arg(1,ArbolAux,IndiceArbol), % Se extrae el valor de ArbolAux y se almacena en IndiceArbol
+		menor(Indice1,IndiceArbol, Comp, Menor), % Se comprueba cuál es el menor de los dos
+		(
+			(Menor=IndiceArbol,ArbolAux1=tree(Menor,ArbolAux,Hoja1)); % Si el menor es IndiceArbol, se devuelve un tree con su nodo correspondiente y después el de Hoja1
+			(Menor=Indice1,ArbolAux1=tree(Menor,Hoja1,ArbolAux)) % Si el menor es Indice1, se devuelve un tree con su nodo correspondiente y después el de ArbolAux
+		)
+				
+	),
+	hojas_arbol_aux(HojaCopia,Comp,ArbolAux1,Arbol). % Por último, se vuelve a llamar al predicado auxiliar con el nuevo árbol generado
+%%%%%%%%%%%%%%%%HOJAS_ARBOL%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%ORDENACION%%%%%%%%%%%%%%%
+ordenacion(Arbol, Comp, Orden):-
+	arg(1,Arbol,A1), % Se extrae el primer nodo del árbol
+	arg(2,Arbol,A2), % Se extrae el segundo nodo del árbol
+	
+	(% Si solo había un elemento en el árbol, se devuelve una lista con A1
+		A2==void,
+		addend([],A1,Orden)
+	);
+	(
+	arg(2,Arbol,A2),
+    	arg(3,Arbol,A3), % Se extrae el tercer nodo del árbol
+    	addhead(A3, [], Hojas), % Se añade el nodo como primer elemento de la lista
+    	ordenacion_aux(A2,Comp,[],Orden,Hojas) % Se llama al predicado auxiliar con el segundo nodo del árbol
+	).
+	
+
+ordenacion_aux(Arbol,Comp, OrdenAux,Orden,Hojas):-
+	
+	arg(1,Arbol,A1), % Se extrae el primer nodo del árbol secundario 
+	arg(2,Arbol,A2), % Se extrae el segundo nodo del árbol secundario 
+
+	
+	( % Si solo hay un solo elemento en el árbol con el que se ha llamado al predicado auxiliar, se reflota el árbol
+		A2==void,
+		addend(OrdenAux,A1,OrdenAux1),
+		reflotar(Hojas,Comp,OrdenAux1,Orden)
+
+	);
+	arg(2,Arbol,A2), % Se extrae el segundo nodo del árbol
+	arg(3,Arbol,A3), % Se extrae el tercer nodo del árbol
+	addhead(A3, Hojas, Hojas1), % Se añade el nodo como primer elemento de la lista
+	ordenacion_aux(A2,Comp,OrdenAux,Orden,Hojas1). % Se procede a llamar al predicado auxiliar de nuevo con el segundo nodo del árbol
+	
+	
+reflotar([],Comp,Orden,Orden). % Caso base
+reflotar(Hojas,Comp,OrdenAux,Orden):- % El nodo hoja se elimina sustituyéndolo por un árbol vacío
+	hojas_arbol(Hojas,Comp,Arbol),
+	ordenacion_aux(Arbol,Comp,OrdenAux,Orden,[]).
+%%%%%%%%%%%%%%%%ORDENACION%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%ORDENAR%%%%%%%%%%%%%%%
+ordenar(Lista,Comp,Orden):- % Predicado que llama utiliza los otros predicados vistos anteriormente para ordenar los elementos de una lista
+	lista_hojas(Lista,Hojas),
+	hojas_arbol(Hojas,Comp,Arbol),
+	ordenacion(Arbol,Comp, Orden).
+%%%%%%%%%%%%%%%%ORDENAR%%%%%%%%%%%%%%%
+
+ __   __  _  _  ___  __   __   __      __   ___  __  _    _  __   __   __   __   __ 
+|__] |__/ |  | |___ |__] |__| [__     |__/ |___ |__| |    |   /  |__| |  \ |__| [__  
+|    |  \ |__| |___ |__] |  | ___]    |  \ |___ |  | |___ |  /__ |  | |__/ |  | ___] 
+                                                                                     
+																					 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%PRUEBAS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%MENOR%%%%%%%%%%%
+menor(1,2,<,M),M==1,
+menor(2,1,<,M),M==1,
+menor(2,2,=<,M),M==2,
+menor(4,2,>,M),M==4,
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%MENOR_O_IGUAL%%%%%%%
+menor_o_igual([a,a,a],[a,a,a,a,a]),%menor
+menor_o_igual(p(a,X),p(Z,m)),%son iguales
+menor_o_igual(p(...),p(...)),%es menor p que q
+menor_o_igual(p(a,b,c),p(a,a,a,a,a)),%es menor
+menor_o_igual(p(a,X,c,a),p(a,b,c,d)),%es menor
+menor_o_igual(p(q(r(a))),p(r(a))),%es menor
+menor_o_igual([a,b],[a,b,c,d]),%es menor
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%LISTA_HOJAS%%%%%%%%%%%%%
+lista_hojas([1,2,3],Hojas), Hojas = [tree(1,void,void),tree(2,void,void),tree(3,void,void)],
+lista_hojas([1,2,3,4,5],Hojas), Hojas =[tree(1,void,void),tree(2,void,void),tree(3,void,void),tree(4,void,void),tree(5,void,void)],
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%ORDENAR%%%%%%%%%%%%%%%
+%%Usa todos los apartados del punto tres
+ordenar([1,2,3,4,5],>,Orden),Orden==[5,4,3,2,1],
+ordenar([1,3,2,5,4,6,7,4],<,Orden),Orden== [1,2,3,4,4,5,6,7],
+ordenar([1,3,2,5,4,6,7,4],>,Orden),Orden== [7,6,5,4,4,3,2,1],
+ordenar([1,a,4,6,7,4],@>,Orden),Orden == [a,7,6,4,4,1],
+ordenar([1,a,4,b,a,7,4],@>,Orden),Orden== [b,a,a,7,4,4,1].
